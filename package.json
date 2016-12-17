@@ -11,5 +11,8 @@
     "nodemailer": "^2.7.0",
     "request": "^2.79.0",
     "utf8": "^2.1.2"
+  },
+  "scripts": {
+    "start": "node ./bin/www"
   }
 }
