@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "async": "^2.1.4",
+    "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
     "iconv": "^2.2.1",
