@@ -1,10 +1,11 @@
 {
-  "main": "example.js",
+  "main": "./bin/www",
   "name": "david",
   "version": "0.0.1",
   "dependencies": {
     "async": "^2.1.4",
     "cheerio": "^0.22.0",
+    "express": "^4.14.0",
     "iconv": "^2.2.1",
     "jade-bootstrap": "^1.0.9",
     "node-cron": "^1.1.2",
