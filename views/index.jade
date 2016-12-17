@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      each item in list
+        div.col-sm-12
+          a(href= 'https://rent.591.com.tw/rent-detail-' + item.post_id + '.html')
+            img(src= item.cover).responsive-img
+          p= '$' + item.price
+          p= item.section_name
+          p= item.fulladdress
+          p= item.layout
+          p= item.floorInfo
+          p= item.living
+          p= item.condition
+          hr

@@ -1,0 +1,15 @@
+{
+  "main": "example.js",
+  "name": "undefined",
+  "version": "0.0.1",
+  "dependencies": {
+    "async": "^2.1.4",
+    "cheerio": "^0.22.0",
+    "iconv": "^2.2.1",
+    "jade-bootstrap": "^1.0.9",
+    "node-cron": "^1.1.2",
+    "nodemailer": "^2.7.0",
+    "request": "^2.79.0",
+    "utf8": "^2.1.2"
+  }
+}

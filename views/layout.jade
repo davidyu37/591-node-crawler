@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width')
+    title= 'Boss'
+    block css
+      link(rel='stylesheet', href='/css/style.css')
+      include ../node_modules/jade-bootstrap/_bootstrap
+      
+    block js
+      if ENV_DEVELOPMENT
+        script(src='http://localhost:35729/livereload.js')
+  body
+    block content
