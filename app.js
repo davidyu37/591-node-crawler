@@ -89,60 +89,36 @@ if (app.get('env') === 'development') {
     });
 }
 
-// cron.schedule('*/59 * * * *', function(){
-//     console.log('running a task every one hour');
-//     request.get({
-//         url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
-//     }, function(err, res591, body) {
-//         if(body) {
-//             var content = JSON.parse(body);
-//             var newList = content.data.data;
-//             var jsonNewList = JSON.stringify(newList);
+cron.schedule('*/59 * * * *', function(){
+    console.log('running a task every one hour');
+    request.get({
+        url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
+    }, function(err, res591, body) {
+        if(body) {
+            var content = JSON.parse(body);
+            var newList = content.data.data;
+            var jsonNewList = JSON.stringify(newList);
             
-//             if(data[0].post_id === newList[0].post_id) {
-//                 console.log('nothing changed');
-//                 //Do nothing because there's no new house posted'
-//             } else {
-//                 fs.writeFile('house_data.json', jsonNewList, function(err) {
-//                 if (err) {
-//                     console.log('Something when wrong');
-//                 } else {
-//                     console.log('Saved!');
-//                     // constructHtml(newList);
-//                     //Send email notification
-//                     sendMail(newList);
-//                 }
-//                 });
-//             }
-//         }
-//     });
-// });
-
-request.get({
-    url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
-}, function(err, res591, body) {
-    if(body) {
-        var content = JSON.parse(body);
-        var newList = content.data.data;
-        var jsonNewList = JSON.stringify(newList);
-        
-        if(data[0].post_id === newList[0].post_id) {
-            console.log('nothing changed');
-            // sendMail(newList);
-            //Do nothing because there's no new house posted'
-        } else {
-            fs.writeFile('house_data.json', jsonNewList, function(err) {
-            if (err) {
-                console.log('Something when wrong');
+            if(data[0].post_id === newList[0].post_id) {
+                console.log('nothing changed');
+                // sendMail(newList);
+                //Do nothing because there's no new house posted'
             } else {
-                console.log('Saved!');
-                //Send email notification
-                sendMail(newList);
+                fs.writeFile('house_data.json', jsonNewList, function(err) {
+                if (err) {
+                    console.log('Something when wrong');
+                } else {
+                    console.log('Saved!');
+                    //Send email notification
+                    sendMail(newList);
+                }
+                });
             }
-            });
         }
-    }
+    });
 });
+
+
 
 
 function sendMail(obj) {
@@ -169,7 +145,6 @@ function sendMail(obj) {
         //     house.condition + '</p></div><hr/>';
         //     html += eachHtml;
         // });
-        console.log(html);
         // setup e-mail data with unicode symbols
         // 	kaoxiaoyang@gmail.com
         var mailOptions = {
