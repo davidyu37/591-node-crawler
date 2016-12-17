@@ -13,6 +13,6 @@
     "utf8": "^2.1.2"
   },
   "scripts": {
-    "start": "npm i && node ./bin/www"
+    "start": "node ./bin/www"
   }
 }
