@@ -8,7 +8,8 @@ var data = require('../house_data.json');
 
 router.get('/', function(req, res) {
   request.get({
-    url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
+    url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&pattern=2&hasimg=1&rentprice=4'
+    // url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
   }, function(err, res591, body) {
       if(body) {
         var content = JSON.parse(body);
