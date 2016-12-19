@@ -13,22 +13,22 @@ var cron = require('node-cron');
 var fs = require('fs');
 var data = require('./house_data.json');
 var async = require('async');
+var mandrillTransport = require('nodemailer-mandrill-transport');
 
 // var users = require('./routes/user');
 
 //For nodemailer
-// var connection = {
-//     host: 'smtp.mailgun.org',
-//     secure: true,
-//     auth: {
-//         user: 'postmaster@sandbox71cee6567e504a01a0c648f273897726.mailgun.org',
-//         pass: '1234qwer'
-//     },
-//     logger: true
-// };
+
+// var transporter = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '3janDEcwJBOYj0JbanD6XQ'
+//   }
+// }));
+
 var connection = {
     host: 'smtp.gmail.com',
     secure: true,
+    port: 465,
     auth: {
         user: 'davidyu37@gmail.com',
         pass: 'basketballmvp1'
@@ -36,7 +36,6 @@ var connection = {
     logger: true
 };
 
-// create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport(connection);
 
 
@@ -118,6 +117,31 @@ cron.schedule('*/59 * * * *', function(){
     });
 });
 
+request.get({
+        url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
+    }, function(err, res591, body) {
+        if(body) {
+            var content = JSON.parse(body);
+            var newList = content.data.data;
+            var jsonNewList = JSON.stringify(newList);
+            
+            if(data[0].post_id === newList[0].post_id) {
+                console.log('nothing changed');
+                sendMail(newList);
+                //Do nothing because there's no new house posted'
+            } else {
+                fs.writeFile('house_data.json', jsonNewList, function(err) {
+                if (err) {
+                    console.log('Something when wrong');
+                } else {
+                    console.log('Saved!');
+                    //Send email notification
+                    // sendMail(newList);
+                }
+                });
+            }
+        }
+    });
 
 
 
@@ -132,24 +156,10 @@ function sendMail(obj) {
         text += '<p>' + obj[0].section_name + '</p><br/>';
         text += 'https://rent.591.com.tw/rent-detail-' + obj[0].post_id + '.html';
         text += '<br/> View recent list: https://crawling591.herokuapp.com/';
-        // obj.forEach(function(house) {
-        //     eachHtml = '<div><a href="https://rent.591.com.tw/rent-detail-' + 
-        //     house.post_id + '.html' + '"><img src="' + 
-        //     house.cover + '"/></a><p>$ ' + 
-        //     house.price + '</p><p>' + 
-        //     house.section_name + '</p><p>' +
-        //     house.fulladdress + '</p><p>' + 
-        //     house.layout + '</p><p>' + 
-        //     house.floorInfo + '</p><p>' + 
-        //     house.living + '</p><p>' + 
-        //     house.condition + '</p></div><hr/>';
-        //     html += eachHtml;
-        // });
-        // setup e-mail data with unicode symbols
         // 	kaoxiaoyang@gmail.com
         var mailOptions = {
             from: '"591 Houses🔑" <davidyu37@gmail.com>',
-            to: 'davidyu37@gmail.com, kaoxiaoyang@gmail.com',
+            to: 'davidyu37@gmail.com',
             subject: '591 Houses🔑',
             // text: text,
             html: text // html body
@@ -160,7 +170,8 @@ function sendMail(obj) {
             if(error){
                 return console.log(error);
             }
-            console.log('Message sent: ' + info.response);
+            console.log('Message sent: ');
+            console.log(info)
         });
     }
 
