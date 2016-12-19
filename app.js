@@ -14,6 +14,25 @@ var fs = require('fs');
 var data = require('./house_data.json');
 var async = require('async');
 var mandrillTransport = require('nodemailer-mandrill-transport');
+var xoauth2 = require('xoauth2');
+var config = require('./config');
+
+console.log(config);
+
+// login
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        xoauth2: xoauth2.createXOAuth2Generator({
+            user: 'davidyu37@gmail.com',
+            clientId: '773416375737-ekl42s0mbiqbb9v8n4lh6d5rceo6n4d8.apps.googleusercontent.com',
+            clientSecret: '_KAwWsuo_D3xY8DPO6c5VSaC',
+            scope: "https://mail.google.com/",
+            refreshToken: '1/AsJeEGYMFkjNMKJ6UzmaY-BiZrPMd_laI6f6yDA_xUM',
+            accessToken: 'ya29.Ci-5A4KGkWw6vQLjCnIDSlNCt5aG9c7s5CAY5zSkhRh-Oa9pqsVTy8T_XF1kK-SikA'
+        })
+    }
+});
 
 // var users = require('./routes/user');
 
@@ -25,18 +44,18 @@ var mandrillTransport = require('nodemailer-mandrill-transport');
 //   }
 // }));
 
-var connection = {
-    host: 'smtp.gmail.com',
-    secure: true,
-    port: 465,
-    auth: {
-        user: 'davidyu37@gmail.com',
-        pass: 'basketballmvp1'
-    },
-    logger: true
-};
+// var connection = {
+//     host: 'smtp.gmail.com',
+//     secure: true,
+//     port: 465,
+//     auth: {
+//         user: 'davidyu37@gmail.com',
+//         pass: 'basketballmvp1'
+//     },
+//     logger: true
+// };
 
-var transporter = nodemailer.createTransport(connection);
+// var transporter = nodemailer.createTransport(connection);
 
 
 // var cheerio = require('cheerio');
@@ -91,7 +110,7 @@ if (app.get('env') === 'development') {
 cron.schedule('*/59 * * * *', function(){
     console.log('running a task every one hour');
     request.get({
-        url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
+        url: config.api_url,                                                              
     }, function(err, res591, body) {
         if(body) {
             var content = JSON.parse(body);
@@ -117,31 +136,31 @@ cron.schedule('*/59 * * * *', function(){
     });
 });
 
-request.get({
-        url: 'https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=0&searchtype=1&region=1&order=posttime&orderType=desc&section=3,5,7,1&pattern=2&hasimg=1&rentprice=4&other=lease',                                                              
-    }, function(err, res591, body) {
-        if(body) {
-            var content = JSON.parse(body);
-            var newList = content.data.data;
-            var jsonNewList = JSON.stringify(newList);
+// request.get({
+//         url: config.api_url,                                                              
+//     }, function(err, res591, body) {
+//         if(body) {
+//             var content = JSON.parse(body);
+//             var newList = content.data.data;
+//             var jsonNewList = JSON.stringify(newList);
             
-            if(data[0].post_id === newList[0].post_id) {
-                console.log('nothing changed');
-                sendMail(newList);
-                //Do nothing because there's no new house posted'
-            } else {
-                fs.writeFile('house_data.json', jsonNewList, function(err) {
-                if (err) {
-                    console.log('Something when wrong');
-                } else {
-                    console.log('Saved!');
-                    //Send email notification
-                    // sendMail(newList);
-                }
-                });
-            }
-        }
-    });
+//             if(data[0].post_id === newList[0].post_id) {
+//                 console.log('nothing changed');
+//                 sendMail(newList);
+//                 //Do nothing because there's no new house posted'
+//             } else {
+//                 fs.writeFile('house_data.json', jsonNewList, function(err) {
+//                 if (err) {
+//                     console.log('Something when wrong');
+//                 } else {
+//                     console.log('Saved!');
+//                     //Send email notification
+//                     // sendMail(newList);
+//                 }
+//                 });
+//             }
+//         }
+//     });
 
 
 
@@ -159,7 +178,7 @@ function sendMail(obj) {
         // 	kaoxiaoyang@gmail.com
         var mailOptions = {
             from: '"591 Houses🔑" <davidyu37@gmail.com>',
-            to: 'davidyu37@gmail.com',
+            to: 'davidyu37@gmail.com, kaoxiaoyang@gmail.com',
             subject: '591 Houses🔑',
             // text: text,
             html: text // html body
