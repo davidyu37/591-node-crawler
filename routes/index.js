@@ -3,7 +3,7 @@ var router = express.Router();
 var request = require('request');
 var fs = require('fs');
 var data = require('../house_data.json');
-var cofig = require('../config');
+var config = require('../config');
 /* GET home page. */
 
 router.get('/', function(req, res) {
