@@ -24,12 +24,12 @@ var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         xoauth2: xoauth2.createXOAuth2Generator({
-            user: 'davidyu37@gmail.com',
-            clientId: '773416375737-ekl42s0mbiqbb9v8n4lh6d5rceo6n4d8.apps.googleusercontent.com',
-            clientSecret: '_KAwWsuo_D3xY8DPO6c5VSaC',
+            user: '',
+            clientId: '',
+            clientSecret: '',
             scope: "https://mail.google.com/",
-            refreshToken: '1/AsJeEGYMFkjNMKJ6UzmaY-BiZrPMd_laI6f6yDA_xUM',
-            accessToken: 'ya29.Ci-5A4KGkWw6vQLjCnIDSlNCt5aG9c7s5CAY5zSkhRh-Oa9pqsVTy8T_XF1kK-SikA'
+            refreshToken: '',
+            accessToken: ''
         })
     }
 });
@@ -177,8 +177,8 @@ function sendMail(obj) {
         text += '<br/> View recent list: https://crawling591.herokuapp.com/';
         // 	kaoxiaoyang@gmail.com
         var mailOptions = {
-            from: '"591 Houses🔑" <davidyu37@gmail.com>',
-            to: 'davidyu37@gmail.com, kaoxiaoyang@gmail.com',
+            from: '',
+            to: '',
             subject: '591 Houses🔑',
             // text: text,
             html: text // html body
